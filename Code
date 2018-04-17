@@ -1,14 +1,15 @@
 Sub importar_dados_derivativos()
 '
 'importar_dados_derivativos Macro
-'Escolher a pasta dos arquivos para importação
-
+'
 Dim strArquivo As String
-Dim strPath As String: strPath = "C:\Daniel\03-Mestrado UFF\DISSERTAÇÃO\Dados quantitativos\Series para dissertação\Arquivos\2017\"
+Dim strPath As String: strPath = "C:\Daniel\03-Mestrado UFF\DISSERTAÇÃO\Dados quantitativos\Series para dissertação\Arquivos\2016\"
 
 strArquivo = Dir(strPath)
 
+
 Do While strArquivo <> ""
+
 
 'Abrir o arquivo organizado por colunas
     Workbooks.OpenText (strPath & strArquivo), Origin:=xlMSDOS, StartRow:=1, DataType:=xlFixedWidth, FieldInfo:= _
@@ -21,44 +22,42 @@ Do While strArquivo <> ""
  
 'Excluir colunas que não serão usadas OBS A coluna posterior se move para esquerda
     Columns("A").Delete
-    Columns("N").Delete
-    Columns("O").Delete
+    Columns("B").Delete
+    Columns("F").Delete
+    Columns("L").Delete
+    Columns("M").Delete
     
 'Organizar cabeçalho
     Range("A1").Select
     ActiveCell.FormulaR1C1 = "Data da geração do arquivo"
     Range("B1").Select
-    ActiveCell.FormulaR1C1 = "Tipo de negociação"
-    Range("C1").Select
     ActiveCell.FormulaR1C1 = "Código da mercadoria"
-    Range("D1").Select
+    Range("C1").Select
     ActiveCell.FormulaR1C1 = "Código do mercado"
-    Range("E1").Select
+    Range("D1").Select
     ActiveCell.FormulaR1C1 = "Tipo da série"
-    Range("F1").Select
+    Range("E1").Select
     ActiveCell.FormulaR1C1 = "Série (opc)/ Vencimento(fut)"
-    Range("G1").Select
-    ActiveCell.FormulaR1C1 = "Hora da criação deste registro"
-    Range("H1").Select
+    Range("F1").Select
     ActiveCell.FormulaR1C1 = "Data de vencimento (fut/opç)"
-    Range("I1").Select
+    Range("G1").Select
     ActiveCell.FormulaR1C1 = "Preço de exercício (opç)"
-    Range("J1").Select
+    Range("H1").Select
     ActiveCell.FormulaR1C1 = "Valor do ponto ou tamanho do contrato"
-    Range("K1").Select
+    Range("I1").Select
     ActiveCell.FormulaR1C1 = "Volume do dia em R$"
-    Range("L1").Select
+    Range("J1").Select
     ActiveCell.FormulaR1C1 = "Volume do dia em U$"
-    Range("M1").Select
+    Range("K1").Select
     ActiveCell.FormulaR1C1 = "Qtde. de contratos em aberto"
-    Range("N1").Select
+    Range("L1").Select
     ActiveCell.FormulaR1C1 = "Cotação de fechamento do dia"
 
     
     
 'Filtrar linhas importantes
-    Columns("A:N").AutoFilter
-    Columns("C").AutoFilter Field:=3, Criteria1:=Array( _
+    Columns("A:L").AutoFilter
+    Columns("B").AutoFilter Field:=2, Criteria1:=Array( _
     "DOL"), Operator:=xlFilterValues
 
  
@@ -79,9 +78,9 @@ Do While strArquivo <> ""
     End With
     ActiveWindow.FreezePanes = True
     
-    Columns("A:N").EntireColumn.AutoFit
-    Columns("A:N").AutoFilter
-    Columns("A:N").Select
+    Columns("A:L").EntireColumn.AutoFit
+    Columns("A:L").AutoFilter
+    Columns("A:L").Select
     Selection.HorizontalAlignment = xlCenter
     
  
@@ -92,3 +91,5 @@ Do While strArquivo <> ""
 strArquivo = Dir
 Loop
 End Sub
+
+
