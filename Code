@@ -1,24 +1,20 @@
 Sub importar_dados_derivativos()
 '
 'importar_dados_derivativos Macro
-'
-Dim stNome As String, stPasta As String, stArquivo As String
+'Escolher a pasta dos arquivos para importação
 
-stPasta = Path & "C:\Daniel\03-Mestrado UFF\DISSERTAÇÃO\Dados quantitativos\Series para dissertação\Arquivos\"
-stNome = "1701.txt"
-stArquivo = stPasta & stNome
+Dim strArquivo As String
+Dim strPath As String: strPath = "C:\Daniel\03-Mestrado UFF\DISSERTAÇÃO\Dados quantitativos\Series para dissertação\Arquivos\2017\"
+
+strArquivo = Dir(strPath)
+
+Do While strArquivo <> ""
 
 'Abrir o arquivo organizado por colunas
-    Workbooks.OpenText Filename:=stArquivo, Origin:=xlMSDOS, StartRow:=1, DataType:=xlFixedWidth, FieldInfo:= _
+    Workbooks.OpenText (strPath & strArquivo), Origin:=xlMSDOS, StartRow:=1, DataType:=xlFixedWidth, FieldInfo:= _
     Array(Array(0, 1), Array(11, 1), Array(19, 1), Array(21, 1), Array(24, 1), _
     Array(25, 1), Array(26, 1), Array(30, 1), Array(36, 1), Array(44, 1), Array(57, 1), _
     Array(70, 1), Array(83, 1), Array(96, 1), Array(104, 1), Array(222, 1), Array(230, 1)), TrailingMinusNumbers:=True
-        
-
-   
-'Preciso abrir vários arquivos e nomear eles com uma variavel e assim fazer um loop na instrução abaixo
-        
-
 
 'Criar primeira coluna
     Rows("1:1").Insert Shift:=xlDown, CopyOrigin:=xlFormatFromLeftOrAbove
@@ -75,7 +71,14 @@ stArquivo = stPasta & stNome
     ActiveWorkbook.Sheets.Add After:=Worksheets(Worksheets.Count)
     ActiveSheet.Paste
     Application.CutCopyMode = False
-    ActiveSheet.Name = stNome
+    ActiveSheet.Name = strArquivo
+    
+    With ActiveWindow
+        .SplitColumn = 0
+        .SplitRow = 1
+    End With
+    ActiveWindow.FreezePanes = True
+    
     Columns("A:N").EntireColumn.AutoFit
     Columns("A:N").AutoFilter
     Columns("A:N").Select
@@ -83,7 +86,9 @@ stArquivo = stPasta & stNome
     
  
 'Fechar arquivo de importação
-    Windows(stNome).Activate
+    Windows(strArquivo).Activate
     ActiveWindow.Close savechanges:=False
 
+strArquivo = Dir
+Loop
 End Sub
