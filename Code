@@ -3,10 +3,18 @@ Sub importar_dados_derivativos()
 'importar_dados_derivativos Macro
 '
 Dim strArquivo As String
-Dim strPath As String: strPath = "C:\Daniel\03-Mestrado UFF\DISSERTAÇÃO\Dados quantitativos\Series para dissertação\Arquivos\2016\"
+Dim strPath As String
 
+'Definir nome do arquivo que será salvo
+strArquivoOut = "2016"
+'Definir a pasta onde estão as planilhas para importação
+strPath = "C:\Daniel\03-Mestrado UFF\DISSERTAÇÃO\Dados quantitativos\Series para dissertação\Arquivos\" & strArquivoOut & "\"
+'Definir as planilha onde serão importadas as informações
 strArquivo = Dir(strPath)
-
+'Definir a planilha onde será exportada as informações
+planexport = "Planilha mestre.xlsm"
+'Definir pasta onde será salvo
+strPathOut = "C:\Daniel\03-Mestrado UFF\DISSERTAÇÃO\Dados quantitativos\Series para dissertação\Arquivos organizados futuros\"
 
 Do While strArquivo <> ""
 
@@ -15,10 +23,10 @@ Do While strArquivo <> ""
     Workbooks.OpenText (strPath & strArquivo), Origin:=xlMSDOS, StartRow:=1, DataType:=xlFixedWidth, FieldInfo:= _
     Array(Array(0, 1), Array(11, 1), Array(19, 1), Array(21, 1), Array(24, 1), _
     Array(25, 1), Array(26, 1), Array(30, 1), Array(36, 1), Array(44, 1), Array(57, 1), _
-    Array(70, 1), Array(83, 1), Array(96, 1), Array(104, 1), Array(222, 1), Array(230, 1)), TrailingMinusNumbers:=True
+    Array(70, 1), Array(83, 1), Array(96, 1), Array(104, 1), Array(190, 1), Array(198, 1)), TrailingMinusNumbers:=True
 
 'Criar primeira coluna
-    Rows("1:1").Insert Shift:=xlDown, CopyOrigin:=xlFormatFromLeftOrAbove
+    Rows("1:1").Insert 'Shift:=xlDown, CopyOrigin:=xlFormatFromLeftOrAbove
  
 'Excluir colunas que não serão usadas OBS A coluna posterior se move para esquerda
     Columns("A").Delete
@@ -29,7 +37,7 @@ Do While strArquivo <> ""
     
 'Organizar cabeçalho
     Range("A1").Select
-    ActiveCell.FormulaR1C1 = "Data da geração do arquivo"
+    ActiveCell.FormulaR1C1 = "Data da geração do arquivo" 'Insere um texto "" ou formula "=" na celula ativa
     Range("B1").Select
     ActiveCell.FormulaR1C1 = "Código da mercadoria"
     Range("C1").Select
@@ -60,14 +68,13 @@ Do While strArquivo <> ""
     Columns("B").AutoFilter Field:=2, Criteria1:=Array( _
     "DOL"), Operator:=xlFilterValues
 
- 
-      
+       
 'Passar dados para planilha mãe e organizar
     Cells.Select
     Selection.Copy
     
-    Windows("Dados derivativos.xlsm").Activate
-    ActiveWorkbook.Sheets.Add After:=Worksheets(Worksheets.Count)
+    Windows(planexport).Activate
+    ActiveWorkbook.Sheets.Add after:=Worksheets(Worksheets.Count) 'Retorna o workbook ativo/aberto
     ActiveSheet.Paste
     Application.CutCopyMode = False
     ActiveSheet.Name = strArquivo
@@ -90,6 +97,15 @@ Do While strArquivo <> ""
 
 strArquivo = Dir
 Loop
-End Sub
 
+MsgBox "Fim importação"
+
+    Windows(planexport).Activate
+    ActiveWorkbook.SaveAs Filename:=strPathOut & strArquivoOut, FileFormat:=xlOpenXMLWorkbookMacroEnabled, CreateBackup:=False
+    MsgBox "Arquivo Salvo"
+    ActiveWorkbook.Close savechanges:=True
+    
+
+
+End Sub
 
