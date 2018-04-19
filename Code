@@ -5,6 +5,8 @@ Sub importar_dados_derivativos()
 Dim strArquivo As String
 Dim strPath As String
 
+Application.ScreenUpdating = False 'Macro roda sem ficar atualizando a cada etapa
+
 'Definir nome do arquivo que será salvo
 strArquivoOut = "2016"
 'Definir a pasta onde estão as planilhas para importação
